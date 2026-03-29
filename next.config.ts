@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/api/generate': ['./base_report/**/*', './public/base_report/**/*']
   },
-  serverExternalPackages: ['puppeteer']
+  serverExternalPackages: ['puppeteer', 'puppeteer-core', '@sparticuz/chromium']
 };
 
 export default nextConfig;
