@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     externalDir: true
   },
   outputFileTracingRoot: path.resolve(__dirname),
+  outputFileTracingIncludes: {
+    '/api/generate': ['./base_report/**/*', './public/base_report/**/*']
+  },
   serverExternalPackages: ['puppeteer']
 };
 
