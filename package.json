@@ -1,20 +1,33 @@
 {
   "name": "report-generator",
   "version": "1.0.0",
+  "private": true,
   "description": "MDX to PDF report generator",
-  "main": "doc.js",
   "scripts": {
-    "dev": "npm run web:dev",
-    "build": "npm run web:build",
-    "start": "npm run web:start",
-    "lint": "npm --prefix web run lint",
-    "web:dev": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run dev",
-    "web:build": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run build",
-    "web:start": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run start"
+    "dev": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 next dev",
+    "build": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 next build",
+    "start": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "bufferutil": "^4.1.0",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.0",
-    "puppeteer": "^24.0.0"
+    "next": "^15.2.0",
+    "puppeteer": "^24.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "utf-8-validate": "^6.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.21.0",
+    "eslint-config-next": "^15.2.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2"
   }
 }

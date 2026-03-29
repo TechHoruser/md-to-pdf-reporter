@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateReportFromMarkdown } from '../../../../lib/reportGenerator.js';
+import { generateReportFromMarkdown } from '../../../lib/reportGenerator.js';
 import { COMPANY_COLOR_DEFAULTS } from '@/types/config';
 
 export const runtime = 'nodejs';

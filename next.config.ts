@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: true
   },
-  outputFileTracingRoot: path.join(__dirname, '..'),
+  outputFileTracingRoot: path.resolve(__dirname),
   serverExternalPackages: ['puppeteer']
 };
 
