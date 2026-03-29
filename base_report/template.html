@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  /* Main Color */
+    --main-color: #5F6B7A;
+    --secondary-color: #64748B;
+
+  /* Main Gradient */
+  --main-gradient: linear-gradient(90deg, 
+        #A1A1AA 0%, 
+        #94A3B8 20%, 
+        #64748B 40%, 
+        #6B7280 60%, 
+        #5F6B7A 80%, 
+        #B0B8C1 100%
+  );
+
+  /* Background & Other Graphic Elements */
+    --bg-dark-obsidian: #111827;
+    --bg-dark-gray: #374151;
+    --bg-medium-gray: #6B7280;
+    --bg-light-gray: #E5E7EB;
+}
+
+/* --- PAGE MARGINS --- */
+@page {
+    size: A4;
+    margin: 100px 50px 80px 50px;
+}
+
+/* El margen 0 en la primera página colapsa el espacio del header/footer de Puppeteer */
+@page:first {
+    margin: 0px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.page-break {
+    page-break-before: always;
+    break-before: page;
+}
+
+/* --- TITLE PAGE --- */
+.cover-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* centrar horizontalmente los hijos */
+    gap: 24px; /* espacio vertical entre logo, título y metadatos */
+    padding: 100px 80px; 
+}
+
+.cover-image {
+    width: 280px;
+    height: 280px;
+    background-image: url('{{coverBase64}}');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+
+.cover-title {
+    font-size: 56px;
+    font-weight: 700;
+    /* Gradient title using root palette */
+    background: var(--main-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.0;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.cover-metadata {
+    width: 60%;
+    margin: 0 auto 0;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.cover-metadata > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.cover-metadata > div span:nth-child(2) {
+    font-weight: 700;
+}
+
+/* --- TABLE OF CONTENTS (Summary) --- */
+.toc { margin: 0px 0px 40px 0px; break-before: page; page-break-before: always; }
+.toc h1 { font-size: 32px; color: #1a1a1a; border-bottom: 2px solid var(--main-color); padding-bottom: 10px; margin-bottom: 30px; }
+.toc ul { list-style-type: none; padding-left: 0; }
+.toc li { margin: 12px 0; }
+.toc .toc-level-1 { margin-left: 0; font-weight: 600; font-size: 16px; }
+.toc .toc-level-2 { margin-left: 20px; color: #444; }
+.toc .toc-level-3 { margin-left: 40px; font-size: 0.9em; color: #666; }
+.toc li a { text-decoration: none; color: inherit; display: flex; align-items: baseline; width: 100%; }
+.toc li a::after { content: ""; flex: 1; border-bottom: 1px dotted var(--main-color); margin: 0 10px; }
+.toc-page-number { order: 3; font-weight: 600; color: #1a1a1a; }
+
+/* --- CONTENT STYLES --- */
+#main-content { break-before: page; page-break-before: always; }
+.content h1 { color: #1a1a1a; font-size: 28px; margin-top: 40px; border-bottom: 2px solid #00d2a0; padding-bottom: 8px; break-before: page; page-break-before: always; }
+.content h2 { color: #333; font-size: 22px; margin-top: 30px; }
+
+/* Evitar dobles saltos al inicio de contenedores que ya saltan de página */
+.toc h1:first-child,
+#main-content > h1:first-child,
+#main-content > h2:first-child,
+#main-content > :first-child:is(h1, h2) {
+    break-before: avoid;
+    page-break-before: avoid;
+}
+.content h3 { color: #555; font-size: 18px; margin-top: 25px; }
+.content p { margin-bottom: 16px; }
+.content a { color: var(--main-color); text-decoration: underline; }
+.content a:hover { color: var(--secondary-color); }
+.content ul { margin-bottom: 16px; padding-left: 20px; }
+.content li { margin-bottom: 8px; }
+
+/* --- CODE BLOCKS --- */
+.content pre {
+    background: #f5f8fb;
+    border: 1px solid #d7e2ee;
+    border-left: 4px solid var(--main-color);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 16px 0 24px;
+    overflow-x: auto;
+    page-break-inside: avoid;
+}
+
+.content pre code {
+    display: block;
+    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #203247;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.content :not(pre) > code {
+    background: #eef4fa;
+    border: 1px solid #d7e2ee;
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #1f3a56;
+}
+
+.content .tok-command {
+    color: #0f8f67;
+    font-weight: 700;
+}
+
+.content .tok-option {
+    color: #0d73b8;
+    font-weight: 600;
+}
+
+.content .tok-string {
+    color: #9b2f7f;
+}
+
+.content .tok-url {
+    color: #0a6d9c;
+}
+
+/* Use root palette for list markers (bullets and numbers) */
+.content li::marker { color: var(--main-color); }
+
+/* También aplicar color de root a números y markers en listas anidadas */
+.content ol li::marker { color: var(--main-color); }
+
+/* --- TABLES --- */
+.content table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px; }
+.content table th, .content table td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; }
+.content table th { background: var(--main-color); color: white; font-weight: 600; border-bottom: 2px solid var(--main-color); }
+.content img { display: block; margin-left: auto; margin-right: auto; max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* --- FOOTER --- */
+</style>
+</head>
+<body>
+
+<div class="cover-page">
+    <div class="cover-image"></div>
+    <div class="cover-title">{{title}}</div>
+    
+    <div class="cover-metadata">
+        <div><span>Created By:</span> <span>{{author}}</span></div>
+        <div><span>Company:</span> <span>{{company}}</span></div>
+        <div><span>Date:</span> <span>{{date}}</span></div>
+        <div><span>Version:</span> <span>{{version}}</span></div>
+    </div>
+</div>
+
+<div class="content">
+    {{toc}}
+</div>
+
+<div class="content" id="main-content">
+    {{content}}
+</div>
+
+</body>
+</html>

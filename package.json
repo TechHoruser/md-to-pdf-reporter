@@ -1,0 +1,20 @@
+{
+  "name": "report-generator",
+  "version": "1.0.0",
+  "description": "MDX to PDF report generator",
+  "main": "doc.js",
+  "scripts": {
+    "dev": "npm run web:dev",
+    "build": "npm run web:build",
+    "start": "npm run web:start",
+    "lint": "npm --prefix web run lint",
+    "web:dev": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run dev",
+    "web:build": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run build",
+    "web:start": "WS_NO_BUFFER_UTIL=1 WS_NO_UTF_8_VALIDATE=1 npm --prefix web run start"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0",
+    "puppeteer": "^24.0.0"
+  }
+}
