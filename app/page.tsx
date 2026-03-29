@@ -25,7 +25,16 @@ Write your content here.
 `;
 
 export default function Home() {
-  const { config, isReady } = useConfig();
+  const {
+    config,
+    activeAuthor,
+    activeCompany,
+    isReady,
+    setActiveAuthor,
+    setActiveCompany,
+    addAuthor,
+    addCompany
+  } = useConfig();
   const [markdown, setMarkdown] = useLocalStorage<string>('reporter-markdown', starterMarkdown);
   const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -33,6 +42,7 @@ export default function Home() {
   const [autoGenerate, setAutoGenerate] = useState(false);
   const [previewActive, setPreviewActive] = useState(true);
   const [configOpen, setConfigOpen] = useState(false);
+  const [configEditTarget, setConfigEditTarget] = useState<'author' | 'company'>('author');
 
   const debouncedMarkdown = useDebounce(markdown, 3000);
   const canGenerate = useMemo(() => isReady && previewActive, [isReady, previewActive]);
@@ -53,8 +63,8 @@ export default function Home() {
         },
         body: JSON.stringify({
           markdown: sourceMarkdown,
-          author: config.author,
-          company: config.company,
+          author: activeAuthor,
+          company: activeCompany,
           title: 'Live Preview'
         })
       });
@@ -72,7 +82,7 @@ export default function Home() {
       setStatus('error');
       setStatusMessage(error instanceof Error ? error.message : 'Unexpected error');
     }
-  }, [canGenerate, config.author, config.company]);
+  }, [activeAuthor, activeCompany, canGenerate]);
 
   useEffect(() => {
     if (!autoGenerate || !canGenerate) {
@@ -86,11 +96,40 @@ export default function Home() {
     <main className="p-4 md:p-6">
       <Toolbar
         onGenerate={() => generatePdf(markdown)}
-        onOpenConfig={() => setConfigOpen(true)}
         autoGenerate={autoGenerate}
         setAutoGenerate={setAutoGenerate}
         previewActive={previewActive}
         setPreviewActive={setPreviewActive}
+        authors={config.authors.map((author) => ({
+          id: author.id,
+          label: author.name || 'Author'
+        }))}
+        companies={config.companies.map((company) => ({
+          id: company.id,
+          label: company.name || 'Company'
+        }))}
+        activeAuthorId={config.activeAuthorId}
+        activeCompanyId={config.activeCompanyId}
+        onSelectAuthor={setActiveAuthor}
+        onSelectCompany={setActiveCompany}
+        onAddAuthor={() => {
+          addAuthor();
+          setConfigEditTarget('author');
+          setConfigOpen(true);
+        }}
+        onAddCompany={() => {
+          addCompany();
+          setConfigEditTarget('company');
+          setConfigOpen(true);
+        }}
+        onEditAuthor={() => {
+          setConfigEditTarget('author');
+          setConfigOpen(true);
+        }}
+        onEditCompany={() => {
+          setConfigEditTarget('company');
+          setConfigOpen(true);
+        }}
         status={status}
         message={statusMessage}
       />
@@ -100,7 +139,11 @@ export default function Home() {
         <PDFPreview blob={pdfBlob} enabled={previewActive} />
       </section>
 
-      <ConfigPanel open={configOpen} onClose={() => setConfigOpen(false)} />
+      <ConfigPanel
+        open={configOpen}
+        initialTarget={configEditTarget}
+        onClose={() => setConfigOpen(false)}
+      />
     </main>
   );
 }

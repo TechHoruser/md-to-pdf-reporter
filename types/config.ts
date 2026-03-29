@@ -1,4 +1,5 @@
 export type Author = {
+  id: string;
   name: string;
   email?: string;
   role?: string;
@@ -35,6 +36,7 @@ export const COMPANY_COLOR_FIELDS: Array<{
 ];
 
 export type Company = {
+  id: string;
   name: string;
   images: {
     cover: string;
@@ -44,6 +46,22 @@ export type Company = {
 };
 
 export type AppConfig = {
-  author: Author;
-  company: Company;
+  authors: Author[];
+  companies: Company[];
+  activeAuthorId: string;
+  activeCompanyId: string;
 };
+
+export const AUTHOR_DEFAULTS = {
+  name: 'Author',
+  email: '',
+  role: ''
+} as const;
+
+export const COMPANY_DEFAULTS = {
+  name: 'Company',
+  images: {
+    cover: '',
+    header: ''
+  }
+} as const;

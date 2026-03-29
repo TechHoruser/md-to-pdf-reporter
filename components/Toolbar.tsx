@@ -1,26 +1,82 @@
 'use client';
 
+import { ChangeEvent } from 'react';
+
+type Option = {
+  id: string;
+  label: string;
+};
+
+const ADD_AUTHOR_VALUE = '__add-author__';
+const ADD_COMPANY_VALUE = '__add-company__';
+const EDIT_AUTHOR_VALUE = '__edit-author__';
+const EDIT_COMPANY_VALUE = '__edit-company__';
+
 type ToolbarProps = {
   onGenerate: () => void;
-  onOpenConfig: () => void;
   autoGenerate: boolean;
   setAutoGenerate: (value: boolean) => void;
   previewActive: boolean;
   setPreviewActive: (value: boolean) => void;
+  authors: Option[];
+  companies: Option[];
+  activeAuthorId: string;
+  activeCompanyId: string;
+  onSelectAuthor: (authorId: string) => void;
+  onSelectCompany: (companyId: string) => void;
+  onAddAuthor: () => void;
+  onAddCompany: () => void;
+  onEditAuthor: () => void;
+  onEditCompany: () => void;
   status: 'idle' | 'loading' | 'success' | 'error';
   message: string;
 };
 
 export function Toolbar({
   onGenerate,
-  onOpenConfig,
   autoGenerate,
   setAutoGenerate,
   previewActive,
   setPreviewActive,
+  authors,
+  companies,
+  activeAuthorId,
+  activeCompanyId,
+  onSelectAuthor,
+  onSelectCompany,
+  onAddAuthor,
+  onAddCompany,
+  onEditAuthor,
+  onEditCompany,
   status,
   message
 }: ToolbarProps) {
+  const handleAuthorChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    if (value === EDIT_AUTHOR_VALUE) {
+      onEditAuthor();
+      return;
+    }
+    if (value === ADD_AUTHOR_VALUE) {
+      onAddAuthor();
+      return;
+    }
+    onSelectAuthor(value);
+  };
+
+  const handleCompanyChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    if (value === EDIT_COMPANY_VALUE) {
+      onEditCompany();
+      return;
+    }
+    if (value === ADD_COMPANY_VALUE) {
+      onAddCompany();
+      return;
+    }
+    onSelectCompany(value);
+  };
+
   return (
     <header className="toolbar-wrap px-4 py-3">
       <div className="toolbar flex flex-wrap items-center gap-3 rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 shadow-sm">
@@ -50,13 +106,39 @@ export function Toolbar({
           Preview active
         </label>
 
-        <button
-          type="button"
-          onClick={onOpenConfig}
-          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-100"
-        >
-          Config
-        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Author</span>
+          <select
+            value={activeAuthorId}
+            onChange={handleAuthorChange}
+            className="h-9 min-w-44 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-slate-900"
+          >
+            {authors.map((author) => (
+              <option key={author.id} value={author.id}>
+                {author.label}
+              </option>
+            ))}
+            <option value={EDIT_AUTHOR_VALUE}>✏ Edit current author</option>
+            <option value={ADD_AUTHOR_VALUE}>+ Add author</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Company</span>
+          <select
+            value={activeCompanyId}
+            onChange={handleCompanyChange}
+            className="h-9 min-w-44 rounded-lg border border-slate-300 bg-white px-3 text-sm outline-none focus:border-slate-900"
+          >
+            {companies.map((company) => (
+              <option key={company.id} value={company.id}>
+                {company.label}
+              </option>
+            ))}
+            <option value={EDIT_COMPANY_VALUE}>✏ Edit current company</option>
+            <option value={ADD_COMPANY_VALUE}>+ Add company</option>
+          </select>
+        </div>
 
         <span
           className={`ml-auto rounded-full px-3 py-1 text-xs font-medium ${
