@@ -14,6 +14,7 @@ const EDIT_COMPANY_VALUE = '__edit-company__';
 
 type ToolbarProps = {
   onGenerate: () => void;
+  onShare: () => void;
   autoGenerate: boolean;
   setAutoGenerate: (value: boolean) => void;
   previewActive: boolean;
@@ -34,6 +35,7 @@ type ToolbarProps = {
 
 export function Toolbar({
   onGenerate,
+  onShare,
   autoGenerate,
   setAutoGenerate,
   previewActive,
@@ -86,6 +88,17 @@ export function Toolbar({
           className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
         >
           Generate PDF
+        </button>
+
+        <button
+          type="button"
+          onClick={onShare}
+          className="flex items-center gap-1.5 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M7.78 1.97a.75.75 0 0 0-1.06 0L4.47 4.22a.75.75 0 0 0 1.06 1.06l1.22-1.22v6.44a.75.75 0 0 0 1.5 0V4.06l1.22 1.22a.75.75 0 1 0 1.06-1.06L7.78 1.97ZM3.75 13a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5Z" />
+          </svg>
+          Compartir
         </button>
 
         <label className="inline-flex items-center gap-2 text-sm text-slate-700">

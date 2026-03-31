@@ -8,6 +8,9 @@ export const dynamic = 'force-dynamic';
 type RequestPayload = {
   markdown: string;
   title?: string;
+  version?: string;
+  date?: string;
+  mainColor?: string;
   author?: {
     name?: string;
     email?: string;
@@ -40,6 +43,8 @@ export async function POST(request: NextRequest) {
 
     const pdfBuffer: Buffer = await generateReportFromMarkdown({
       markdown: payload.markdown,
+      version: payload.version || '1.0',
+      date: payload.date || new Date().toISOString().split('T')[0],
       author: {
         name: payload.author?.name || 'Author',
         email: payload.author?.email,
@@ -52,7 +57,7 @@ export async function POST(request: NextRequest) {
           header: payload.company?.images?.header || ''
         },
         colors: {
-          mainColor: payload.company?.colors?.mainColor || COMPANY_COLOR_DEFAULTS.mainColor,
+          mainColor: payload.mainColor || payload.company?.colors?.mainColor || COMPANY_COLOR_DEFAULTS.mainColor,
           secondaryColor: payload.company?.colors?.secondaryColor || COMPANY_COLOR_DEFAULTS.secondaryColor,
           bgDarkObsidian: payload.company?.colors?.bgDarkObsidian || COMPANY_COLOR_DEFAULTS.bgDarkObsidian,
           bgDarkGray: payload.company?.colors?.bgDarkGray || COMPANY_COLOR_DEFAULTS.bgDarkGray,
